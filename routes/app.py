@@ -4,7 +4,9 @@ import json
 
 app = Flask(__name__)
 
-CORS(app, resouces={r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*'}})
+CORS(app, resouces={
+    r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*'}
+})
 
 home_app = Blueprint('home_app', __name__)
 

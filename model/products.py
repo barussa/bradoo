@@ -11,15 +11,23 @@ class Product(Base):
     price = Column('price', Numeric)
     vendor_id = Column(Integer, ForeignKey('vendors.id'))
 
-    def __init__(self, name, code, price,):
+    def __init__(self, name, code, vendor_id, price=None):
         self.name = name
         self.code = code
-        self.price = price
+        self.vendor_id = vendor_id
+        if not price:
+            self.price = None
+        else:
+            self.price = price
 
     def to__dict__(self):
         d = dict()
         d['id'] = self.id
         d['name'] = self.name
         d['code'] = self.code
-        d['price'] = str(self.price)
+        d['vendor_id'] = self.vendor_id
+        if self.price:
+            d['price'] = str(self.price)
+        else:
+            d['price'] = None
         return d

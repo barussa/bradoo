@@ -3,10 +3,11 @@ from flask_cors import CORS
 from services.products_services import ProductServices
 import json
 
-
 app = Flask(__name__)
 
-CORS(app, resouces={r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*'}})
+CORS(app, resouces={
+    r"/*": {"origins": "*", 'Access-Control-Allow-Origin': '*'}
+})
 
 products_app = Blueprint('products_app', __name__)
 
@@ -23,21 +24,16 @@ def listing_products():
 def register_product():
     if request.is_json:
         new_product = request.get_json()
+        if new_product is None:
+            return jsonify({'error': 'Fill the requests'}), 400
+        if 'name' not in new_product:
+            return jsonify({'error': 'Fill name'})
+        if 'code' not in new_product:
+            return jsonify({'error': 'Fill code'})
         product = ProductServices().create(new_product)
-        if product is None:
-            return jsonify({'error': 'Product already exist'}), 400
         return jsonify(product.to__dict__()), 200
     else:
-        new_product = {}
-        new_product['id'] = request.form.get('id')
-        new_product['name'] = request.form.get('name')
-        new_product['code'] = request.form.get('code')
-        new_product['price'] = request.form.get('price')
-        product = ProductServices().create(new_product)
-        if product is None:
-            return jsonify({'error': 'Product already exist'}), 400
-        product = ProductServices().listing()
-        return jsonify(product)
+        return jsonify({'error': 'Invalid Json format'}), 400
 
 
 @products_app.route(f"/{BASE_ROUTE}/update/<int:id>", methods=['PUT'])
@@ -70,7 +66,9 @@ def modify_product(id):
                     return jsonify({"error": "product with out code"}), 400
                 elif ('price' not in product):
                     return jsonify({"error": "product with out price"}), 400
-                updated = service_update(id, product['name'], product['code'], product['price'])
+                updated = service_update(
+                    id, product['name'], product['code'], product['price']
+                )
                 if updated is not None:
                     product = ProductServices().listing()
                     return render_template('lista.html', products=products)
