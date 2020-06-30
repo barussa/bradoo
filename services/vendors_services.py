@@ -49,8 +49,9 @@ class VendorServices():
         vendor.name = modify['name']
         vendor.cnpj = modify['CNPJ']
         vendor.city = modify['city']
+        print(modify['products'])
         for product in modify['products']:
-            if 'removed' in product:
+            if product['removed']:
                 ProductServices().remove(product['id'])
             else:
                 ProductServices().update(product)
