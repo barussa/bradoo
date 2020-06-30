@@ -59,7 +59,7 @@ class ProductServices():
     def list_by_vendor_id(self, vendor_id):
         listing = self.session.query(Product).filter(
             Product.vendor_id == vendor_id
-        ).all()
+        )
         return listing
 
     def list_by_multiple_names(self, names):

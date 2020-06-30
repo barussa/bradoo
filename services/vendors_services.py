@@ -49,15 +49,10 @@ class VendorServices():
         vendor.name = modify['name']
         vendor.cnpj = modify['CNPJ']
         vendor.city = modify['city']
-        list_products = ProductServices().list_by_vendor_id(modify['id'])
-        for product in list_products:
-            exist = False
-            for updated_product in modify['products']:
-                if product.name == updated_product['name'] or product.id == updated_product['id']:
-                    exist = True
-            if not exist:
-                ProductServices().remove(product.id)
         for product in modify['products']:
-            ProductServices().update(product)
+            if 'removed' in product:
+                ProductServices().remove(product['id'])
+            else:
+                ProductServices().update(product)
         self.session.commit()
         return self.locate(vendor.id)
