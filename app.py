@@ -15,7 +15,7 @@ CORS(app)
 
 app.register_blueprint(vendors_app)
 app.register_blueprint(products_app)
-app.register_blueprint(home_app)
+#app.register_blueprint(home_app)
 
 
 Base.metadata.create_all(engine)
