@@ -52,29 +52,7 @@ def modify_product(id):
                 return jsonify(updated.to__dict__()), 200
             return jsonify({"error": "product not found"}), 400
     else:
-        product = ProductServices().locate(id)
-        if product is not None:
-            if request.method == 'PUT':
-                product = {}
-                product['id'] = request.form.get('id')
-                product['name'] = request.form.get('name')
-                product['code'] = request.form.get('code')
-                product['price'] = request.form.get('price')
-                if ('name' not in product):
-                    return jsonify({"error": "product with out name"}), 400
-                elif ('code' not in product):
-                    return jsonify({"error": "product with out code"}), 400
-                elif ('price' not in product):
-                    return jsonify({"error": "product with out price"}), 400
-                updated = service_update(
-                    id, product['name'], product['code'], product['price']
-                )
-                if updated is not None:
-                    product = ProductServices().listing()
-                    return render_template('lista.html', products=products)
-                return jsonify({'error': 'product not found'}), 400
-            return render_template('atualizar.html', product=product)
-        return jsonify({'error': 'product not found'}), 400
+        return jsonify({'error': 'Invalid Json format'}), 400
 
 
 @products_app.route(f"/{BASE_ROUTE}search/<int:id>", methods=['GET'])

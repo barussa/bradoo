@@ -4,7 +4,6 @@ from routes.products_api import products_app
 from flask_cors import CORS
 import request as Req
 from base import engine, Base
-from routes.app import home_app
 
 app = Flask(__name__)
 
@@ -15,8 +14,6 @@ CORS(app)
 
 app.register_blueprint(vendors_app)
 app.register_blueprint(products_app)
-#app.register_blueprint(home_app)
-
 
 Base.metadata.create_all(engine)
 
